@@ -87,6 +87,10 @@ class TgUploader:
                 file_ = ' '.join(file_.split()[1:])
                 file_ = f"{PRENAME_X}" + file_.strip('-').strip('_')
                 cap_mono = f"<{CAPTION_FONT}>{file_}</{CAPTION_FONT}>"
+                cap_mono = cap_mono.replace("f"{PRENAME_X}"", "")
+                cap_mono = cap_mono.replace("HEVC", "#HEVC")
+                cap_mono = cap_mono.replace(".mkv", "")
+                cap_mono = cap_mono.replace(".mp4", "")
                 cap = f"\n\n{CAPTION_X}\n\n"
                 new_path = ospath.join(dirpath, file_)
                 osrename(up_path, new_path)
@@ -100,7 +104,7 @@ class TgUploader:
                 up_path = new_path
         else:
             cap_mono = f"<{CAPTION_FONT}>{file_}</{CAPTION_FONT}>"
-            cap = f"\n\n{CAPTION_X}\n\n"
+            cap = f"\n\n{CAPTION_X}\n\n" 
         # if CUSTOM_FILENAME is not None and prefix == '':
         #     cap_mono = f"<{CAPTION_FONT}>{CUSTOM_FILENAME} {file_}</{CAPTION_FONT}>"
         #     cap = f"\n\n{CAPTION_X}\n\n"
