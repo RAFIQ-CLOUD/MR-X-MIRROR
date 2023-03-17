@@ -96,19 +96,20 @@ def stats(update, context):
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
-             update.effective_message.reply_photo(
-                IMAGE_STATS,
-                stats,
-                parse_mode=ParseMode.HTML,
-                reply_markup=InlineKeyboardMarkup(
-                    [[
-                         InlineKeyboardButton(
-                             text="MR X CLOUD",
-                             url="https://t.me/MR_X_CLOUD"),
-                    ]]))
+    else:
+            stats = f'<b>╭─《 BOT STATISTICS 》</b>\n' \
+                    f'<b>├  Updated On: </b>{last_commit}\n'\
+                    f'<b>├  Uptime: </b>{currentTime}\n'\
+                    f'<b>├  OS Uptime: </b>{osUptime}\n'\
+                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
+                    f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
+                    f'<b>├  Disk:</b> [{progress_bar(disk)}] {disk}%\n'\
+                    f'<b>├  Disk Free:</b> {free}\n'\
+                    f'<b>├  Upload Data:</b> {sent}\n'\
+                    f'<b>╰  Download Data:</b> {recv}\n\n'
 
 
-
+        
     if SHOW_LIMITS_IN_STATS is True:
         torrent_direct = 'No Limit Set' if TORRENT_DIRECT_LIMIT is None else f'{TORRENT_DIRECT_LIMIT}GB/Link'
         clone_limit = 'No Limit Set' if CLONE_LIMIT is None else f'{CLONE_LIMIT}GB/Link'
@@ -127,16 +128,20 @@ def stats(update, context):
                      f'<b>├ 🔰 Mega: </b>{mega_limit}\n'\
                      f'<b>├ 💣 Total Tasks: </b>{total_task}\n'\
                      f'<b>╰ 🔫 User Tasks: </b>{user_task}\n\n'
-            update.effective_message.reply_photo(
-                IMAGE_STATS,
-                stats,
-                parse_mode=ParseMode.HTML,
-                reply_markup=InlineKeyboardMarkup(
-                    [[
-                         InlineKeyboardButton(
-                             text="MR X CLOUD",
-                             url="https://t.me/MR_X_CLOUD"),
-                    ]]))
+    else: 
+            stats += f'<b>╭─《  BOT LIMITS  》</b>\n'\
+                     f'<b>├  Torrent/Direct: </b>{torrent_direct}\n'\
+                     f'<b>├  Zip/Unzip: </b>{zip_unzip}\n'\
+                     f'<b>├  Leech: </b>{leech_limit}\n'\
+                     f'<b>├  Clone: </b>{clone_limit}\n'\
+                     f'<b>├  Mega: </b>{mega_limit}\n'\
+                     f'<b>├  Total Tasks: </b>{total_task}\n'\
+                     f'<b>╰  User Tasks: </b>{user_task}\n\n'
+
+    if PICS:
+        sendPhoto(stats, context.bot, update.message, random.choice(PICS))
+    else:
+        sendMessage(stats, context.bot, update.message)
             
 def start(update, context):
     buttons = ButtonMaker()
