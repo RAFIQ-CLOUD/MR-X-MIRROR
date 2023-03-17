@@ -376,6 +376,10 @@ def is_udrive_link(url: str):
     else:
         url = re_match(r'https?://(hubdrive|katdrive|kolop|drivefire|drivebuzz)\.\S+', url)
         return bool(url)
+    
+def is_filepress_link(url: str):
+    url = re_match(r'https?://(filepress|filebee)\.\S+', url)
+    return bool(url)
 
 def is_mega_link(url: str):
     return "mega.nz" in url or "mega.co.nz" in url
