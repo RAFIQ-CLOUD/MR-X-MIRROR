@@ -91,5 +91,5 @@ def add_gd_download(link, path, listener, is_gdtot, is_unified, is_udrive, is_fi
     listener.onDownloadStart()
     sendStatusMessage(listener.message, listener.bot)
     drive.download(link)
-    if (is_gdtot or is_unified or is_udrive or is_filepress):
+    if (is_gdtot or is_unified or is_udrive):
         drive.deletefile(link)
