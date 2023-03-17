@@ -25,6 +25,7 @@ playwright
 psutil
 psycopg2-binary
 pybase64
+pymongo
 pyrogram
 python-dotenv
 python-magic
