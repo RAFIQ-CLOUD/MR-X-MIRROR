@@ -174,10 +174,9 @@ def get_readable_message():
             globals()['PAGES'] = ceil(tasks/STATUS_LIMIT)
             if PAGE_NO > PAGES and PAGES != 0:
                 globals()['COUNT'] -= STATUS_LIMIT
-                globals()['PAGE_NO'] -= 1
-        msg = f"\n<b>▬▬▬ @MR_X_CLOUD ▬▬▬</b>\n"        
+                globals()['PAGE_NO'] -= 1       
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>╭ <a href='{download.message.link}'>{download.status()}</a>: </b>"
+            msg += f"<b>═════〣 PeterX  〣═════</b>\n\n<b>• <a href='{download.message.link}'>{download.status()}</a>: </b>"
             msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
@@ -185,16 +184,18 @@ def get_readable_message():
                     msg += f"\n<b>├🔄 𝗣𝗿𝗼𝗰𝗲𝘀𝘀𝗲𝗱:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                     msg += f"\n<b>├⚡ 𝗦𝗽𝗲𝗲𝗱:</b> {download.speed()}"
                     msg += f"\n<b>├⏳ 𝗘𝗧𝗔:</b> {download.eta()}"
-                    msg += f"<b> | 𝗘𝗹𝗮𝗽𝘀𝗲𝗱: </b>{get_readable_time(time() - download.message.date.timestamp())}"
-                    msg += f"\n<b>├⛓️ 𝗘𝗻𝗴𝗶𝗻𝗲 :</b> {download.eng()}"
+                    msg += f"\n<b>├⏳ 𝗘𝗹𝗮𝗽𝘀𝗲𝗱: </b>{get_readable_time(time() - download.message.date.timestamp())}"
+                    msg += f"\n<b>├⛓️ 𝗘𝗻𝗴𝗶𝗻𝗲:</b> {download.eng()}"
+                    msg += f"\n<b>├⚠️ 𝗪𝗮𝗿𝗻: </b> <code>/warn {download.message.from_user.id}</code>"
 
                 else:
                     msg += f"\n<b>├ 𝗗𝗼𝘄𝗻𝗹𝗼𝗮𝗱:</b>{get_progress_bar_string(download)} {download.progress()}"
                     msg += f"\n<b>├ 𝗣𝗿𝗼𝗰𝗲𝘀𝘀𝗲𝗱:</b> {get_readable_file_size(download.processed_bytes())} of {download.size()}"
                     msg += f"\n<b>├ 𝗦𝗽𝗲𝗲𝗱:</b> {download.speed()}"
                     msg += f"\n<b>├ 𝗘𝗧𝗔:</b> {download.eta()}"
-                    msg += f"<b> | 𝗘𝗹𝗮𝗽𝘀𝗲𝗱: </b>{get_readable_time(time() - download.message.date.timestamp())}"
+                    msg += f"\n<b>├ 𝗘𝗹𝗮𝗽𝘀𝗲𝗱: </b>{get_readable_time(time() - download.message.date.timestamp())}"
                     msg += f"\n<b>├ 𝗘𝗻𝗴𝗶𝗻𝗲:</b> {download.eng()}"
+                    msg += f"\n<b>├ 𝗪𝗮𝗿𝗻: </b> <code>/warn {download.message.from_user.id}</code>"
 
                 if hasattr(download, 'seeders_num'):
                     try:
@@ -228,7 +229,7 @@ def get_readable_message():
             elif download.status() == MirrorStatus.STATUS_SEEDING:
                 if EMOJI_THEME is True:
                     msg += f"\n<b>├📦 𝗦𝗶𝘇𝗲: </b>{download.size()}"
-                    msg += f"\n<b>├⛓️ Engine:</b> <code>qBittorrent v4.4.2</code>"
+                    msg += f"\n<b>├⛓️ 𝗘𝗻𝗴𝗶𝗻𝗲:</b> <code>qBittorrent v4.4.2</code>"
                     msg += f"\n<b>├⚡ 𝗦𝗽𝗲𝗲𝗱: </b>{download.upload_speed()}"
                     msg += f"\n<b>├🔺 𝗨𝗽𝗹𝗼𝗮𝗱𝗲𝗱: </b>{download.uploaded_bytes()}"
                     msg += f"\n<b>├📎 𝗥𝗮𝘁𝗶𝗼: </b>{download.ratio()}"
