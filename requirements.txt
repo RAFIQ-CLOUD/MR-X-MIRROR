@@ -11,14 +11,17 @@ cloudscraper
 feedparser
 flask
 gc-python-utils
+cinemagoer
 google-api-python-client
 google-auth-httplib2
 google-auth-oauthlib
 gunicorn
 lk21
 lxml
+markdown
 mediainfo
 pillow
+playwright
 psutil
 psycopg2-binary
 pybase64
