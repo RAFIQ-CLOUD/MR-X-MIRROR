@@ -34,6 +34,9 @@ from datetime import datetime
 
 version = "2.0"
 
+IMAGE_STATS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
+IMAGE_START = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
+
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
     p_total = UN_FINISHED_PROGRESS_STR
@@ -93,19 +96,16 @@ def stats(update, context):
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
-
-    else:
-            stats = f'<b>╭─《 BOT STATISTICS 》</b>\n' \
-                    f'<b>├  Updated On: </b>{last_commit}\n'\
-                    f'<b>├  Uptime: </b>{currentTime}\n'\
-                    f'<b>├  Version: {version}\n'\
-                    f'<b>├  OS Uptime: </b>{osUptime}\n'\
-                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
-                    f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
-                    f'<b>├  Disk:</b> [{progress_bar(disk)}] {disk}%\n'\
-                    f'<b>├  Disk Free:</b> {free}\n'\
-                    f'<b>├  Upload Data:</b> {sent}\n'\
-                    f'<b>╰  Download Data:</b> {recv}\n\n'
+             update.effective_message.reply_photo(
+                IMAGE_STATS,
+                stats,
+                parse_mode=ParseMode.HTML,
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                         InlineKeyboardButton(
+                             text="MR X CLOUD",
+                             url="https://t.me/MR_X_CLOUD"),
+                    ]]))
 
 
 
@@ -127,21 +127,17 @@ def stats(update, context):
                      f'<b>├ 🔰 Mega: </b>{mega_limit}\n'\
                      f'<b>├ 💣 Total Tasks: </b>{total_task}\n'\
                      f'<b>╰ 🔫 User Tasks: </b>{user_task}\n\n'
-        else: 
-            stats += f'<b>╭─《  BOT LIMITS  》</b>\n'\
-                     f'<b>├  Torrent/Direct: </b>{torrent_direct}\n'\
-                     f'<b>├  Zip/Unzip: </b>{zip_unzip}\n'\
-                     f'<b>├  Leech: </b>{leech_limit}\n'\
-                     f'<b>├  Clone: </b>{clone_limit}\n'\
-                     f'<b>├  Mega: </b>{mega_limit}\n'\
-                     f'<b>├  Total Tasks: </b>{total_task}\n'\
-                     f'<b>╰  User Tasks: </b>{user_task}\n\n'
-
-    if PICS:
-        sendPhoto(stats, context.bot, update.message, random.choice(PICS))
-    else:
-        sendMessage(stats, context.bot, update.message)
-
+            update.effective_message.reply_photo(
+                IMAGE_STATS,
+                stats,
+                parse_mode=ParseMode.HTML,
+                reply_markup=InlineKeyboardMarkup(
+                    [[
+                         InlineKeyboardButton(
+                             text="MR X CLOUD",
+                             url="https://t.me/MR_X_CLOUD"),
+                    ]]))
+            
 def start(update, context):
     buttons = ButtonMaker()
     if EMOJI_THEME is True:
@@ -160,7 +156,7 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
         else:
             sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        text = f"Not Authorized user, deploy your own mirror bot"
+        text = f"<b><u>Access Denied...</u>\nYou can't use me here.\nJoin My Group & use me there\n I'll send your links & leeched files here.</b>"
         if PICS:
             sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
@@ -168,17 +164,50 @@ Type /{BotCommands.HelpCommand} to get a list of available commands
 
 
 def restart(update, context):
-    restart_message = sendMessage("Restarting...", context.bot, update.message)
-    if Interval:
-        Interval[0].cancel()
-        Interval.clear()
-    clean_all()
-    srun(["pkill", "-f", "gunicorn|aria2c|qbittorrent-nox|ffmpeg"])
-    srun(["python3", "update.py"])
-    with open(".restartmsg", "w") as f:
-        f.truncate(0)
-        f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
-    osexecl(executable, executable, "-m", "bot")
+    cmd = update.effective_message.text.split(' ', 1)
+    dynoRestart = False
+    dynoKill = False
+    if len(cmd) == 2:
+        dynoRestart = (cmd[1].lower()).startswith('d')
+        dynoKill = (cmd[1].lower()).startswith('k')
+    if (not HEROKU_API_KEY) or (not HEROKU_APP_NAME):
+        LOGGER.info("If you want Heroku features, fill HEROKU_APP_NAME HEROKU_API_KEY vars.")
+        dynoRestart = False
+        dynoKill = False
+    if dynoRestart:
+        LOGGER.info("Dyno Restarting.")
+        restart_message = sendMessage("Dyno Restarting.", context.bot, update.message)
+        with open(".restartmsg", "w") as f:
+            f.truncate(0)
+            f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
+        heroku_conn = heroku3.from_key(HEROKU_API_KEY)
+        app = heroku_conn.app(HEROKU_APP_NAME)
+        app.restart()
+    elif dynoKill:
+        LOGGER.info("Killing Dyno. MUHAHAHA")
+        sendMessage("Killed Dyno.", context.bot, update.message)
+        alive.kill()
+        clean_all()
+        heroku_conn = heroku3.from_key(HEROKU_API_KEY)
+        app = heroku_conn.app(HEROKU_APP_NAME)
+        proclist = app.process_formation()
+        for po in proclist:
+            app.process_formation()[po.type].scale(0)
+    else:
+        LOGGER.info("Normally Restarting.")
+        restart_message = sendMessage("Normally Restarting.", context.bot, update.message)
+        if Interval:
+            Interval[0].cancel()
+            Interval.clear()
+        alive.kill()
+        clean_all()
+        srun(["pkill", "-9", "-f", "gunicorn|chrome|firefox|megasdkrest|opera"])
+        srun(["python3", "update.py"])
+        with open(".restartmsg", "w") as f:
+            f.truncate(0)
+            f.write(f"{restart_message.chat.id}\n{restart_message.message_id}\n")
+        osexecl(executable, executable, "-m", "bot")
+
 
 
 def ping(update, context):
