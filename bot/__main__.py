@@ -34,9 +34,6 @@ from datetime import datetime
 
 version = "2.0"
 
-IMAGE_STATS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
-IMAGE_START = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
-
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
     p_total = UN_FINISHED_PROGRESS_STR
