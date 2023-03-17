@@ -1,8 +1,7 @@
 config.env
-Thumbnails/*
-drive_folder
-cookies.txt
+list_drives.txt
 *auth_token.txt
+terabox.txt
 *.pyc
 data*
 .vscode
@@ -14,4 +13,6 @@ log.txt
 authorized_chats.txt
 sudo_users.txt
 accounts/*
-
+Thumbnails/*
+drive_folder
+cookies.txt
