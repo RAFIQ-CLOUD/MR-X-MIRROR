@@ -24,6 +24,7 @@ from cfscrape import create_scraper
 import cloudscraper
 from bs4 import BeautifulSoup
 from base64 import standard_b64encode
+from playwright.sync_api import Playwright, sync_playwright, expect
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
@@ -82,6 +83,8 @@ def direct_link_generator(link: str):
         return unified(link)
     elif is_udrive_link(link):
         return udrive(link)
+    elif is_filepress_link(link):
+        return filepress(link)  
     elif any(x in link for x in fmed_list):
         return fembed(link)
     elif any(x in link for x in ['sbembed.com', 'watchsb.com', 'streamsb.net', 'sbplay.org']):
