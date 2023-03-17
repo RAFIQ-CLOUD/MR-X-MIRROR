@@ -94,6 +94,7 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
     is_gdtot = False
     is_unified = False
     is_udrive = False
+    is_filepress = False
     index = 1
     ratio = None
     seed_time = None
@@ -228,6 +229,7 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
                 is_gdtot = is_gdtot_link(link)
                 is_unified = is_unified_link(link)
                 is_udrive = is_udrive_link(link)
+		is_filepress = is_filepress_link(link)
                 link = direct_link_generator(link)
                 LOGGER.info(f"Generated link: {link}")
             except DirectDownloadLinkException as e:
