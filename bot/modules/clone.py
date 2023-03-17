@@ -139,7 +139,7 @@ def _clone(message, bot):
     is_unified = is_unified_link(link)
     is_udrive = is_udrive_link(link)
     is_filepress = is_filepress_link(link)
-    if (is_gdtot or is_unified or is_udrive):
+    if (is_gdtot or is_unified or is_udrive or is_filepress):
         try:
             LOGGER.info(f"Processing: {link}")
             if is_unified:
