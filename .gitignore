@@ -1,6 +1,7 @@
 config.env
-config_sample.env
+list_drives.txt
 *auth_token.txt
+terabox.txt
 *.pyc
 data*
 .vscode
