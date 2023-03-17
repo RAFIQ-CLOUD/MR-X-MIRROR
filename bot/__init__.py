@@ -753,6 +753,18 @@ except:
     FINISHED_PROGRESS_STR = '●' # '■'
     UN_FINISHED_PROGRESS_STR = '○' # '□'
 try:
+    UPSTREAM_REPO = getConfig('UPSTREAM_REPO')
+    if len(UPSTREAM_REPO) == 0:
+        UPSTREAM_REPO = 'https://github.com/MR-X-MIRROR-BOTZ/MR-X-MIRROR'
+except KeyError:
+    UPSTREAM_REPO = 'https://github.com/MR-X-MIRROR-BOTZ/MR-X-MIRROR'
+try:
+    UPSTREAM_BRANCH = getConfig('UPSTREAM_BRANCH')
+    if len(UPSTREAM_BRANCH) == 0:
+        UPSTREAM_BRANCH = 'master'
+except KeyError:
+    UPSTREAM_BRANCH = 'master'    
+try:
     FSUB = getConfig('FSUB')
     FSUB = FSUB.lower() == 'true'
 except BaseException:
