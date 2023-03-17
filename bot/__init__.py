@@ -34,7 +34,34 @@ LOGGER = getLogger(__name__)
 
 def getConfig(name: str):
     return environ[name]
+  
+CONFIG_FILE_URL = environ.get('CONFIG_FILE_URL')
 
+try:
+    if len(CONFIG_FILE_URL) == 0:
+        raise TypeError
+    try:
+        res = rget(CONFIG_FILE_URL)
+        if res.status_code == 200:
+            with open('config.env', 'wb+') as f:
+                f.write(res.content)
+            log_info("Succesfully got config.env from CONFIG_FILE_URL")
+        else:
+            log_error(f"Failed to download config.env {res.status_code}")
+    except Exception as e:
+        log_error(f"CONFIG_FILE_URL: {e}")
+except:
+    pass
+
+try:
+    HEROKU_API_KEY = getConfig('HEROKU_API_KEY')
+    HEROKU_APP_NAME = getConfig('HEROKU_APP_NAME')
+    if len(HEROKU_API_KEY) == 0 or len(HEROKU_APP_NAME) == 0:
+        raise KeyError
+except:
+    HEROKU_APP_NAME = None
+    HEROKU_API_KEY = None
+  
 PRE_DICT = {}
 CAP_DICT = {}
 LEECH_DICT = {}
@@ -65,6 +92,7 @@ except:
     SERVER_PORT = 80
 
 Popen(f"gunicorn web.wserver:app --bind 0.0.0.0:{SERVER_PORT}", shell=True)
+alive = Popen(["python3", "alive.py"])
 srun(["qbittorrent-nox", "-d", "--profile=."])
 if not ospath.exists('.netrc'):
     srun(["touch", ".netrc"])
@@ -72,6 +100,14 @@ srun(["cp", ".netrc", "/root/.netrc"])
 srun(["chmod", "600", ".netrc"])
 srun(["chmod", "+x", "aria.sh"])
 srun("./aria.sh", shell=True)
+if ospath.exists('accounts.zip'):
+    if ospath.exists('accounts'):
+        srun(["rm", "-rf", "accounts"])
+    srun(["7z", "x", "-o.", "-aoa", "accounts.zip", "accounts/*.json"])
+    srun(["chmod", "-R", "777", "accounts"])
+    osremove('accounts.zip')
+if not ospath.exists('accounts'):
+    config_dict['USE_SERVICE_ACCOUNTS'] = False
 sleep(0.5)
 
 Interval = []
@@ -442,7 +478,7 @@ try:
         raise KeyError
 except:
     START_BTN1_NAME = 'Master'
-    START_BTN1_URL = 'https://t.me/krn_adhikari'
+    START_BTN1_URL = 'https://t.me/MR_X_MIRROR'
 
 try:
     START_BTN2_NAME = getConfig('START_BTN2_NAME')
@@ -451,7 +487,7 @@ try:
         raise KeyError
 except:
     START_BTN2_NAME = 'Support Group'
-    START_BTN2_URL = 'https://t.me/WeebZone_updates'
+    START_BTN2_URL = 'https://t.me/MR_X_CLOUD'
 try:
     BUTTON_FOUR_NAME = getConfig('BUTTON_FOUR_NAME')
     BUTTON_FOUR_URL = getConfig('BUTTON_FOUR_URL')
@@ -662,28 +698,28 @@ except KeyError:
 try:
     AUTHOR_NAME = getConfig('AUTHOR_NAME')
     if len(AUTHOR_NAME) == 0:
-        AUTHOR_NAME = 'Karan'
+        AUTHOR_NAME = 'MR X MIRROR'
 except KeyError:
-    AUTHOR_NAME = 'Karan'
+    AUTHOR_NAME = 'MR X MIRROR'
 try:
     AUTHOR_URL = getConfig('AUTHOR_URL')
     if len(AUTHOR_URL) == 0:
-        AUTHOR_URL = 'https://t.me/WeebZone_updates'
+        AUTHOR_URL = 'https://t.me/MR_X_MIRROR'
 except KeyError:
-    AUTHOR_URL = 'https://t.me/WeebZone_updates'
+    AUTHOR_URL = 'https://t.me/MR_X_MIRROR'
 try:
     TITLE_NAME = getConfig('TITLE_NAME')
     if len(TITLE_NAME) == 0:
-        TITLE_NAME = 'WeebZone'
+        TITLE_NAME = 'MR X CLOUD'
 except KeyError:
-    TITLE_NAME = 'WeebZone'
+    TITLE_NAME = 'MR X CLOUD'
 
 try:
     GD_INFO = getConfig('GD_INFO')
     if len(GD_INFO) == 0:
-        GD_INFO = 'Uploaded by WeebZone Mirror Bot'
+        GD_INFO = 'Uploaded by @MR_X_CLOUD'
 except KeyError:
-    GD_INFO = 'Uploaded by WeebZone Mirror Bot'
+    GD_INFO = 'Uploaded by @MR_X_CLOUD'
 try:
     DISABLE_DRIVE_LINK = getConfig('DISABLE_DRIVE_LINK')
     DISABLE_DRIVE_LINK = DISABLE_DRIVE_LINK.lower() == 'true'
@@ -694,21 +730,21 @@ except KeyError:
 try:
     CREDIT_NAME = getConfig('CREDIT_NAME')
     if len(CREDIT_NAME) == 0:
-        CREDIT_NAME = 'WeebZone'
+        CREDIT_NAME = '@MR_X_CLOUD'
 except KeyError:
-    CREDIT_NAME = 'WeebZone'
+    CREDIT_NAME = '@MR_X_CLOUD'
 try:
     NAME_FONT = getConfig('NAME_FONT')
     if len(NAME_FONT) == 0:
-        NAME_FONT = 'code'
+        NAME_FONT = 'b'
 except KeyError:
-    NAME_FONT = 'code'
+    NAME_FONT = 'b'
 try:
     CAPTION_FONT = getConfig('CAPTION_FONT')
     if len(CAPTION_FONT) == 0:
-        CAPTION_FONT = 'code'
+        CAPTION_FONT = 'b'
 except KeyError:
-    CAPTION_FONT = 'code'
+    CAPTION_FONT = 'b'
 
 try:
     FINISHED_PROGRESS_STR = getConfig('FINISHED_PROGRESS_STR') 
@@ -728,7 +764,7 @@ try:
         raise KeyError
 except KeyError:
     log_info("CHANNEL_USERNAME not provided! Using default @WeebZone_updates")
-    CHANNEL_USERNAME = "WeebZone_updates"
+    CHANNEL_USERNAME = "MR_X_CLOUD"
 try:
     FSUB_CHANNEL_ID = getConfig("FSUB_CHANNEL_ID")
     if len(FSUB_CHANNEL_ID) == 0:
@@ -736,7 +772,7 @@ try:
     FSUB_CHANNEL_ID = int(FSUB_CHANNEL_ID)
 except KeyError:
     log_info("CHANNEL_ID not provided! Using default id of @WeebZone_updates")
-    FSUB_CHANNEL_ID = -1001512307861
+    FSUB_CHANNEL_ID = -1001534450018
 try:
     TOKEN_PICKLE_URL = getConfig('TOKEN_PICKLE_URL')
     if len(TOKEN_PICKLE_URL) == 0:
@@ -828,7 +864,7 @@ except:
 try:
     IMAGE_URL = getConfig('IMAGE_URL')
 except KeyError:
-    IMAGE_URL = 'https://graph.org/file/6b22ef7b8a733c5131d3f.jpg'
+    IMAGE_URL = 'https://telegra.ph/file/078c51630edb3a89ee4d4.jpg'
 try:
     EMOJI_THEME = getConfig('EMOJI_THEME')
     EMOJI_THEME = EMOJI_THEME.lower() == 'true'
