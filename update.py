@@ -37,12 +37,12 @@ try:
     if len(UPSTREAM_REPO) == 0:
        raise TypeError
 except:
-    UPSTREAM_REPO = "https://github.com/weebzone/WZML"
+    UPSTREAM_REPO = "https://github.com/MR-X-MIRROR-BOTZ/MR-X-MIRROR"
 try:
     if len(UPSTREAM_BRANCH) == 0:
        raise TypeError
 except:
-    UPSTREAM_BRANCH = 'update'
+    UPSTREAM_BRANCH = 'master'
 
 if ospath.exists('.git'):
     srun(["rm", "-rf", ".git"])
