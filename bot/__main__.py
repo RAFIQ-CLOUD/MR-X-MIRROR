@@ -32,6 +32,8 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
                     delete, count, leech_settings, search, rss, wayback, speedtest, anilist, bt_select, mediainfo, hash, addons
 from datetime import datetime
 
+version = "2.0"
+
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
     p_total = UN_FINISHED_PROGRESS_STR
@@ -83,6 +85,7 @@ def stats(update, context):
             stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
                     f'<b>├ 🛠 Updated On: </b>{last_commit}\n'\
                     f'<b>├ ⌛ Uptime: </b>{currentTime}\n'\
+                    f'<b>├ 🤖 Version: {version}\n'\
                     f'<b>├ 🟢 OS Uptime: </b>{osUptime}\n'\
                     f'<b>├ 🖥️ CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
                     f'<b>├ 🎮 RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
@@ -95,6 +98,7 @@ def stats(update, context):
             stats = f'<b>╭─《 BOT STATISTICS 》</b>\n' \
                     f'<b>├  Updated On: </b>{last_commit}\n'\
                     f'<b>├  Uptime: </b>{currentTime}\n'\
+                    f'<b>├  Version: {version}\n'\
                     f'<b>├  OS Uptime: </b>{osUptime}\n'\
                     f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
                     f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
@@ -194,7 +198,7 @@ def log(update, context):
 
 
 help_string = '''
-<b><a href='https://github.com/weebzone/WZML'>WeebZone</a></b> - The Ultimate Telegram MIrror-Leech Bot to Upload Your File & Link in Google Drive & Telegram
+<b><a href='https://telegram.dog/MR_X_CLOUD'>MR X CLOUD</a></b> - The Ultimate Telegram MIrror-Leech Bot to Upload Your File & Link in Google Drive & Telegram
 Choose a help category:
 '''
 
@@ -428,10 +432,11 @@ def main():
                     msg += f"⌚TIME: {time}\n"
                     msg += f"🌐TIMEZONE: {TIMEZONE}\n"
                 else:
-                    msg = f"😎Bot Restarted!\n"
-                    msg += f"📅DATE: {date}\n"
-                    msg += f"⌚TIME: {time}\n"
-                    msg += f"🌐TIMEZONE: {TIMEZONE}"
+                    msg = f"<b>Every Ends is a New Beginning! <b>\n\n**Bot Got Re-Started 🚀**"
+                    msg += f"**📅 Date : {date}**\n"
+                    msg += f"**⏰ Time : {time}**\n\n"
+                    msg += f"**🗺️ Time Zone : {TIMEZONE}**\n\n"
+                    msg += f"**Please Re-Download Your Tasks 🚶**"
 
                 for tag, links in data.items():
                      msg += f"\n{tag}: "
@@ -463,7 +468,7 @@ def main():
         bot.edit_message_text(msg, chat_id, msg_id)
         osremove(".restartmsg")
     elif not notifier_dict and AUTHORIZED_CHATS:
-        text = f"😎Bot Restarted❗ \n📅DATE: {date} \n⌚TIME: {time} \n🌐TIMEZONE: {TIMEZONE}"
+        text = f"<b>Every Ends is a New Beginning! \n\nBot Got Re-Started 🚀\n\n📅 Date : {date}\n⏰ Time : {time}\n\n🗺️ TimeZone : {TIMEZONE}\n\nPlease Re-Download Your Tasks 🚶</b>"
         for id_ in AUTHORIZED_CHATS:
             try:
                 bot.sendMessage(chat_id=id_, text=text, parse_mode=ParseMode.HTML)
