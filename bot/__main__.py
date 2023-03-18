@@ -33,7 +33,6 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
 from datetime import datetime
 
 version = "2.0"
-PICS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
 
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
@@ -153,8 +152,7 @@ def start(update, context):
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''
-<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
+        start_string = f'''<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
 '''
         if PICS:
             sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
@@ -166,6 +164,7 @@ def start(update, context):
             sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
             sendMarkup(text, context.bot, update.message, reply_markup)
+            
 
 def restart(update, context):
     restart_message = sendMessage("Normally Restarting.", context.bot, update.message)
@@ -480,17 +479,19 @@ def main():
                 LOGGER.error(e)
 
 
-    start_handler = CommandHandler(BotCommands.StartCommand, start, run_async=True)
+    start_handler = CommandHandler(BotCommands.StartCommand, start)
     ping_handler = CommandHandler(BotCommands.PingCommand, ping,
-                                  filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
     restart_handler = CommandHandler(BotCommands.RestartCommand, restart,
-                                     filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
     help_handler = CommandHandler(BotCommands.HelpCommand, bot_help,
-                                  filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
     stats_handler = CommandHandler(BotCommands.StatsCommand, stats,
-                                   filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
     log_handler = CommandHandler(BotCommands.LogCommand, log,
-                                 filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
+    
+    
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(ping_handler)
     dispatcher.add_handler(restart_handler)
