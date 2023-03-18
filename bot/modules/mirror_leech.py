@@ -11,7 +11,7 @@ from telegram.ext import CommandHandler
 from telegram import ParseMode, InlineKeyboardButton
 
 from bot import *
-from bot.helper.ext_utils.bot_utils import is_url, is_magnet, is_gdtot_link, is_mega_link, is_gdrive_link, is_unified_link, is_udrive_link, is_filepress_link, get_content_type, get_readable_time, get_user_task
+from bot.helper.ext_utils.bot_utils import is_url, is_magnet, is_gdtot_link, is_mega_link, is_gdrive_link, is_unified_link, is_udrive_link, get_content_type, get_readable_time, get_user_task
 from bot.helper.ext_utils.timegap import timegap_check
 from bot.helper.ext_utils.exceptions import DirectDownloadLinkException, NotSupportedExtractionArchive
 from bot.helper.ext_utils.shortenurl import short_url
@@ -94,7 +94,6 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
     is_gdtot = False
     is_unified = False
     is_udrive = False
-    is_filepress = False
     index = 1
     ratio = None
     seed_time = None
@@ -229,7 +228,6 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
                 is_gdtot = is_gdtot_link(link)
                 is_unified = is_unified_link(link)
                 is_udrive = is_udrive_link(link)
-		is_filepress = is_filepress_link(link)
                 link = direct_link_generator(link)
                 LOGGER.info(f"Generated link: {link}")
             except DirectDownloadLinkException as e:
@@ -287,7 +285,7 @@ def _mirror_leech(bot, message, isZip=False, extract=False, isQbit=False, isLeec
             gmsg += f"Use /{BotCommands.UnzipMirrorCommand} to extracts Google Drive archive file"
             sendMessage(gmsg, bot, message)
         else:
-            Thread(target=add_gd_download, args=(link, f'{DOWNLOAD_DIR}{listener.uid}', listener, is_gdtot, is_unified, is_udrive,  is_filepress, name)).start()
+            Thread(target=add_gd_download, args=(link, f'{DOWNLOAD_DIR}{listener.uid}', listener, is_gdtot, is_unified, is_udrive, name)).start()
     elif is_mega_link(link):
         Thread(target=add_mega_download, args=(link, f'{DOWNLOAD_DIR}{listener.uid}/', listener, name)).start()
     elif isQbit and (is_magnet(link) or ospath.exists(link)):
