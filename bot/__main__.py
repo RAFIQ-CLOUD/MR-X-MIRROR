@@ -94,17 +94,7 @@ def stats(update, context):
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
-    else:
-            stats = f'<b>╭─《 BOT STATISTICS 》</b>\n' \
-                    f'<b>├  Updated On: </b>{last_commit}\n'\
-                    f'<b>├  Uptime: </b>{currentTime}\n'\
-                    f'<b>├  OS Uptime: </b>{osUptime}\n'\
-                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
-                    f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
-                    f'<b>├  Disk:</b> [{progress_bar(disk)}] {disk}%\n'\
-                    f'<b>├  Disk Free:</b> {free}\n'\
-                    f'<b>├  Upload Data:</b> {sent}\n'\
-                    f'<b>╰  Download Data:</b> {recv}\n\n'
+            update.effective_message.reply_photo(IMAGE_START, stats, parse_mode=ParseMode.HTML)
 
 
         
@@ -136,7 +126,6 @@ def stats(update, context):
                      f'<b>├  Total Tasks: </b>{total_task}\n'\
                      f'<b>╰  User Tasks: </b>{user_task}\n\n'
 
-    update.effective_message.reply_photo(IMAGE_START, stats, parse_mode=ParseMode.HTML)
             
 def start(update, context):
     buttons = ButtonMaker()
@@ -148,13 +137,20 @@ def start(update, context):
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>'''
-        
-        sendMarkup(start_string, context.bot, update.message, reply_markup)
+        start_string = f'''
+<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
+'''
+       if PICS:
+            sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
+        else:
+            sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        msg1 = f'Hey👋,\n\nThank You for subcribing ME! #X{CMD_INDEX}.\n\n@MR_X_CLOUD'
-        update.effective_message.reply_photo(IMAGE_START, msg1, parse_mode=ParseMode.HTML, reply_markup=reply_markup)
+        text = f"<b>'Hey👋,\n\nThank You for subcribing ME!.\n\n@MR_X_CLOUD</b>"
 
+        if PICS:
+            sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
+        else:
+            sendMarkup(text, context.bot, update.message, reply_markup)
 
 def restart(update, context):
     cmd = update.effective_message.text.split(' ', 1)
