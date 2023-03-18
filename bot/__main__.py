@@ -33,7 +33,7 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
 from datetime import datetime
 
 version = "2.0"
-IMAGE_X = f"{IMAGE_URL}"
+IMAGE_START = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
 
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
@@ -136,7 +136,7 @@ def stats(update, context):
                      f'<b>├  Total Tasks: </b>{total_task}\n'\
                      f'<b>╰  User Tasks: </b>{user_task}\n\n'
 
-    update.effective_message.reply_photo(IMAGE_X, stats, parse_mode=ParseMode.HTML)
+    update.effective_message.reply_photo(IMAGE_START, stats, parse_mode=ParseMode.HTML)
             
 def start(update, context):
     buttons = ButtonMaker()
@@ -148,12 +148,12 @@ def start(update, context):
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''<b>X{CMD_INDEX} BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>'''
+        start_string = f'''<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>'''
         
         sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
         msg1 = f'Hey👋,\n\nThank You for subcribing ME! #X{CMD_INDEX}.\n\n@MR_X_CLOUD'
-        update.effective_message.reply_photo(IMAGE_X, msg1, parse_mode=ParseMode.HTML, reply_markup=reply_markup)
+        update.effective_message.reply_photo(IMAGE_START, msg1, parse_mode=ParseMode.HTML, reply_markup=reply_markup)
 
 
 def restart(update, context):
