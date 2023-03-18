@@ -33,7 +33,7 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
 from datetime import datetime
 
 version = "2.0"
-IMAGE_START = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
+PICS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
 
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
@@ -86,7 +86,7 @@ def stats(update, context):
             stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
                     f'<b>├ 🛠 Updated On: </b>{last_commit}\n'\
                     f'<b>├ ⌛ Uptime: </b>{currentTime}\n'\
-                    f'<b>├ 🤖 Version: {version}\n'\
+                    f'<b>├ 🤖 Version: </b>{version}\n'\
                     f'<b>├ 🟢 OS Uptime: </b>{osUptime}\n'\
                     f'<b>├ 🖥️ CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
                     f'<b>├ 🎮 RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
@@ -94,8 +94,20 @@ def stats(update, context):
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
-            update.effective_message.reply_photo(IMAGE_START, stats, parse_mode=ParseMode.HTML)
 
+    else:
+            stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
+                    f'<b>├  Updated On: </b>{last_commit}\n'\
+                    f'<b>├  Uptime: </b>{currentTime}\n'\
+                    f'<b>├  Version: </b>{version}\n'\
+                    f'<b>├  OS Uptime: </b>{osUptime}\n'\
+                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
+                    f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
+                    f'<b>├  Disk:</b> [{progress_bar(disk)}] {disk}%\n'\
+                    f'<b>├  Disk Free:</b> {free}\n'\
+                    f'<b>├  Upload Data:</b> {sent}\n'\
+                    f'<b>╰  Download Data:</b> {recv}\n\n'
+          
 
         
     if SHOW_LIMITS_IN_STATS is True:
@@ -125,8 +137,12 @@ def stats(update, context):
                      f'<b>├  Mega: </b>{mega_limit}\n'\
                      f'<b>├  Total Tasks: </b>{total_task}\n'\
                      f'<b>╰  User Tasks: </b>{user_task}\n\n'
+        
+    if PICS:
+        sendPhoto(stats, context.bot, update.message, random.choice(PICS)
+    else:
+        sendMessage(stats, context.bot, update.message)
 
-            
 def start(update, context):
     buttons = ButtonMaker()
     if EMOJI_THEME is True:
@@ -140,7 +156,7 @@ def start(update, context):
         start_string = f'''
 <b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
 '''
-       if PICS:
+    if PICS:
             sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
             sendMarkup(start_string, context.bot, update.message, reply_markup)
