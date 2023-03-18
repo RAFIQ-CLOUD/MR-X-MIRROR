@@ -156,13 +156,12 @@ def start(update, context):
         start_string = f'''
 <b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
 '''
-    if PICS:
+        if PICS:
             sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
             sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
         text = f"<b>'Hey👋,\n\nThank You for subcribing ME!.\n\n@MR_X_CLOUD</b>"
-
         if PICS:
             sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
         else:
