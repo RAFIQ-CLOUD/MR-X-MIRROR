@@ -363,6 +363,7 @@ def bot_help(update, context):
 
 if SET_BOT_COMMANDS:
     botcmds = [
+        (f'{BotCommands.StartCommand}', 'Start'),
         (f'{BotCommands.MirrorCommand}', 'Mirror'),
         (f'{BotCommands.ZipMirrorCommand}','Mirror and upload as zip'),
         (f'{BotCommands.UnzipMirrorCommand}','Mirror and extract files'),
