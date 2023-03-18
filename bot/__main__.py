@@ -33,6 +33,8 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
 from datetime import datetime
 
 version = "2.0"
+IMAGE_STATS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
+PICS = "https://telegra.ph/file/078c51630edb3a89ee4d4.jpg"
 
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
@@ -81,8 +83,7 @@ def stats(update, context):
     mem_t = get_readable_file_size(memory.total)
     mem_a = get_readable_file_size(memory.available)
     mem_u = get_readable_file_size(memory.used)
-    if EMOJI_THEME is True:
-            stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
+    stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
                     f'<b>├ 🛠 Updated On: </b>{last_commit}\n'\
                     f'<b>├ ⌛ Uptime: </b>{currentTime}\n'\
                     f'<b>├ 🤖 Version: </b>{version}\n'\
@@ -93,54 +94,7 @@ def stats(update, context):
                     f'<b>├ 💿 Disk Free:</b> {free}\n'\
                     f'<b>├ 🔺 Upload Data:</b> {sent}\n'\
                     f'<b>╰ 🔻 Download Data:</b> {recv}\n\n'
-
-    else:
-            stats = f'<b>╭─《🌐 BOT STATISTICS 🌐》</b>\n' \
-                    f'<b>├  Updated On: </b>{last_commit}\n'\
-                    f'<b>├  Uptime: </b>{currentTime}\n'\
-                    f'<b>├  Version: </b>{version}\n'\
-                    f'<b>├  OS Uptime: </b>{osUptime}\n'\
-                    f'<b>├  CPU:</b> [{progress_bar(cpuUsage)}] {cpuUsage}%\n'\
-                    f'<b>├  RAM:</b> [{progress_bar(mem_p)}] {mem_p}%\n'\
-                    f'<b>├  Disk:</b> [{progress_bar(disk)}] {disk}%\n'\
-                    f'<b>├  Disk Free:</b> {free}\n'\
-                    f'<b>├  Upload Data:</b> {sent}\n'\
-                    f'<b>╰  Download Data:</b> {recv}\n\n'
-          
-
-        
-    if SHOW_LIMITS_IN_STATS is True:
-        torrent_direct = 'No Limit Set' if TORRENT_DIRECT_LIMIT is None else f'{TORRENT_DIRECT_LIMIT}GB/Link'
-        clone_limit = 'No Limit Set' if CLONE_LIMIT is None else f'{CLONE_LIMIT}GB/Link'
-        mega_limit = 'No Limit Set' if MEGA_LIMIT is None else f'{MEGA_LIMIT}GB/Link'
-        leech_limit = 'No Limit Set' if LEECH_LIMIT is None else f'{LEECH_LIMIT}GB/Link'
-        zip_unzip = 'No Limit Set' if ZIP_UNZIP_LIMIT is None else f'{ZIP_UNZIP_LIMIT}GB/Link'
-        total_task = 'No Limit Set' if TOTAL_TASKS_LIMIT is None else f'{TOTAL_TASKS_LIMIT} Total Tasks/Time'
-        user_task = 'No Limit Set' if USER_TASKS_LIMIT is None else f'{USER_TASKS_LIMIT} Tasks/user'
-
-        if EMOJI_THEME is True: 
-            stats += f'<b>╭─《 ⚠️ BOT LIMITS ⚠️ 》</b>\n'\
-                     f'<b>├ 🧲 Torrent/Direct: </b>{torrent_direct}\n'\
-                     f'<b>├ 🔐 Zip/Unzip: </b>{zip_unzip}\n'\
-                     f'<b>├ 🔷 Leech: </b>{leech_limit}\n'\
-                     f'<b>├ ♻️ Clone: </b>{clone_limit}\n'\
-                     f'<b>├ 🔰 Mega: </b>{mega_limit}\n'\
-                     f'<b>├ 💣 Total Tasks: </b>{total_task}\n'\
-                     f'<b>╰ 🔫 User Tasks: </b>{user_task}\n\n'
-    else: 
-            stats += f'<b>╭─《  BOT LIMITS  》</b>\n'\
-                     f'<b>├  Torrent/Direct: </b>{torrent_direct}\n'\
-                     f'<b>├  Zip/Unzip: </b>{zip_unzip}\n'\
-                     f'<b>├  Leech: </b>{leech_limit}\n'\
-                     f'<b>├  Clone: </b>{clone_limit}\n'\
-                     f'<b>├  Mega: </b>{mega_limit}\n'\
-                     f'<b>├  Total Tasks: </b>{total_task}\n'\
-                     f'<b>╰  User Tasks: </b>{user_task}\n\n'
-        
-    if PICS:
-        sendPhoto(stats, context.bot, update.message, random.choice(PICS))
-    else:
-        sendMessage(stats, context.bot, update.message)
+    sendPhoto(stats, context.bot, update.message, random.choice(IMAGE_STATS))
 
 def start(update, context):
     buttons = ButtonMaker()
@@ -150,7 +104,7 @@ def start(update, context):
     else:
         buttons.buildbutton(f"{START_BTN1_NAME}", f"{START_BTN1_URL}")
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
-    reply_markup = buttons.build_menu(2)
+    reply_markup = InlineKeyboardMarkup(buttons.build_menu(2))
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
 '''
@@ -171,7 +125,7 @@ def restart(update, context):
     if Interval:
         Interval[0].cancel()
         Interval.clear()
-        alive.kill()
+    alive.kill()
     clean_all()
     srun(["pkill", "-9", "-f", "gunicorn|chrome|firefox|megasdkrest|opera"])
     srun(["python3", "update.py"])
@@ -326,7 +280,7 @@ def bot_help(update, context):
     else:
         button.buildbutton("User", f"https://graph.org/{help_user}")
         button.buildbutton("Admin", f"https://graph.org/{help_admin}")
-    sendMarkup(help_string, context.bot, update.message, button.build_menu(2))
+    sendMarkup(help_string, context.bot, update.message, InlineKeyboardMarkup(button.build_menu(2)))
 
 
 if SET_BOT_COMMANDS:
@@ -479,17 +433,17 @@ def main():
                 LOGGER.error(e)
 
 
-    start_handler = CommandHandler(BotCommands.StartCommand, start)
+    start_handler = CommandHandler(BotCommands.StartCommand, start, run_async=True))
     ping_handler = CommandHandler(BotCommands.PingCommand, ping,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True))
     restart_handler = CommandHandler(BotCommands.RestartCommand, restart,
-                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
+                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True))
     help_handler = CommandHandler(BotCommands.HelpCommand, bot_help,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True))
     stats_handler = CommandHandler(BotCommands.StatsCommand, stats,
-                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user)
+                                filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True))
     log_handler = CommandHandler(BotCommands.LogCommand, log,
-                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user)
+                                filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True))
     
     
     dispatcher.add_handler(start_handler)
