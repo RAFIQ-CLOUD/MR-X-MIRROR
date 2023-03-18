@@ -671,13 +671,7 @@ try:
     BOT_PM = getConfig('BOT_PM')	
     BOT_PM = BOT_PM.lower() == 'true'	
 except KeyError:	
-    BOT_PM = False
-try:
-    IMAGE_URL = getConfig('IMAGE_URL')
-    if len(IMAGE_URL) == 0:
-        IMAGE_URL = None
-except:
-    IMAGE_URL = 'https://telegra.ph/file/078c51630edb3a89ee4d4.jpg'   
+    BOT_PM = False  
 try:
     FORCE_BOT_PM = getConfig('FORCE_BOT_PM')
     FORCE_BOT_PM = FORCE_BOT_PM.lower() == 'true'
