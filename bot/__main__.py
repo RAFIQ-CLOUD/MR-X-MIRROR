@@ -138,12 +138,19 @@ def start(update, context):
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
         start_string = f'''
-<b>X{CMD_INDEX}BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
+<b>BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>
 '''
-        sendMarkup(start_string, context.bot, update.message, reply_markup)
+       if PICS:
+            sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
+        else:
+            sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        msg1 = f'Hey👋,\n\nThank You for subcribing ME! #X{CMD_INDEX}.\n\n@MR_X_CLOUD'
-        update.effective_message.reply_photo(IMAGE_START, msg1, parse_mode=ParseMode.HTML, reply_markup=reply_markup)
+        text = f"<b>'Hey👋,\n\nThank You for subcribing ME!.\n\n@MR_X_CLOUD</b>"
+
+        if PICS:
+            sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
+        else:
+            sendMarkup(text, context.bot, update.message, reply_markup)
 
 def restart(update, context):
     cmd = update.effective_message.text.split(' ', 1)
