@@ -392,6 +392,8 @@ if SET_BOT_COMMANDS:
         (f'{BotCommands.LeechSetCommand}','Leech settings'),
         (f'{BotCommands.SetThumbCommand}','Set thumbnail'),
         (f'{BotCommands.StatusCommand}','Get mirror status message'),
+        (f'{BotCommands.StatsCommand}','Bot usage stats'),
+        (f'{BotCommands.UsageCommand}','Heroku Dyno usage'),
         (f'{BotCommands.SpeedCommand}','Speedtest'),
         (f'{BotCommands.WayBackCommand}','Internet Archive'),
         (f'{BotCommands.MediaInfoCommand}','Get Information of telegram Files'),
@@ -514,11 +516,12 @@ def main():
                                   filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
     restart_handler = CommandHandler(BotCommands.RestartCommand, restart,
                                      filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
-    help_handler = CommandHandler(BotCommands.HelpCommand,
-                                  bot_help, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-    stats_handler = CommandHandler(BotCommands.StatsCommand,
-                                   stats, filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
-    log_handler = CommandHandler(BotCommands.LogCommand, log, filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
+    help_handler = CommandHandler(BotCommands.HelpCommand, bot_help,
+                                  filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+    stats_handler = CommandHandler(BotCommands.StatsCommand, stats,
+                                   filters=CustomFilters.authorized_chat | CustomFilters.authorized_user, run_async=True)
+    log_handler = CommandHandler(BotCommands.LogCommand, log,
+                                 filters=CustomFilters.owner_filter | CustomFilters.sudo_user, run_async=True)
     dispatcher.add_handler(start_handler)
     dispatcher.add_handler(ping_handler)
     dispatcher.add_handler(restart_handler)
