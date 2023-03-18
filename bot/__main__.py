@@ -139,7 +139,7 @@ def stats(update, context):
                      f'<b>╰  User Tasks: </b>{user_task}\n\n'
         
     if PICS:
-        sendPhoto(stats, context.bot, update.message, random.choice(PICS)
+        sendPhoto(stats, context.bot, update.message, random.choice(PICS))
     else:
         sendMessage(stats, context.bot, update.message)
 
