@@ -33,6 +33,7 @@ from .modules import authorize, list, cancel_mirror, mirror_status, mirror_leech
 from datetime import datetime
 
 version = "2.0"
+IMAGE_X = f"{IMAGE_URL}"
 
 def progress_bar(percentage):
     p_used = FINISHED_PROGRESS_STR
@@ -135,10 +136,7 @@ def stats(update, context):
                      f'<b>├  Total Tasks: </b>{total_task}\n'\
                      f'<b>╰  User Tasks: </b>{user_task}\n\n'
 
-    if PICS:
-        sendPhoto(stats, context.bot, update.message, random.choice(PICS))
-    else:
-        sendMessage(stats, context.bot, update.message)
+    update.effective_message.reply_photo(IMAGE_X, stats, parse_mode=ParseMode.HTML)
             
 def start(update, context):
     buttons = ButtonMaker()
@@ -150,19 +148,12 @@ def start(update, context):
         buttons.buildbutton(f"{START_BTN2_NAME}", f"{START_BTN2_URL}")
     reply_markup = buttons.build_menu(2)
     if CustomFilters.authorized_user(update) or CustomFilters.authorized_chat(update):
-        start_string = f'''This bot can mirror all your links to Google Drive!
-Type /{BotCommands.HelpCommand} to get a list of available commands
-'''
-        if PICS:
-            sendPhoto(start_string, context.bot, update.message, random.choice(PICS), reply_markup)
-        else:
-            sendMarkup(start_string, context.bot, update.message, reply_markup)
+        start_string = f'''<b>X{CMD_INDEX} BoT is Working.\n\nStill {currentTime}\n\n@MR_X_CLOUD</b>'''
+        
+        sendMarkup(start_string, context.bot, update.message, reply_markup)
     else:
-        text = f"<b><u>Access Denied...</u>\nYou can't use me here.\nJoin My Group & use me there\n I'll send your links & leeched files here.</b>"
-        if PICS:
-            sendPhoto(text, context.bot, update.message, random.choice(PICS), reply_markup)
-        else:
-            sendMarkup(text, context.bot, update.message, reply_markup)
+        msg1 = f'Hey👋,\n\nThank You for subcribing ME! #X{CMD_INDEX}.\n\n@MR_X_CLOUD'
+        update.effective_message.reply_photo(IMAGE_X, msg1, parse_mode=ParseMode.HTML, reply_markup=reply_markup)
 
 
 def restart(update, context):
