@@ -131,7 +131,7 @@ def bt_selection_buttons(id_: str):
     else:
         buttons.buildbutton("Select Files", f"{BASE_URL}/app/files/{id_}?pin_code={pincode}")
     buttons.sbutton("Done Selecting", f"btsel done {gid} {id_}")
-    return buttons.build_menu(2)
+    return InlineKeyboardMarkup(buttons.build_menu(2))
 
 
 def get_user_task(user_id):
@@ -176,7 +176,7 @@ def get_readable_message():
                 globals()['COUNT'] -= STATUS_LIMIT
                 globals()['PAGE_NO'] -= 1       
         for index, download in enumerate(list(download_dict.values())[COUNT:], start=1):
-            msg += f"<b>═════〣 PeterX  〣═════</b>\n\n<b>• <a href='{download.message.link}'>{download.status()}</a>: </b>"
+            msg += f"<b>═════〣 MR X CLOUD  〣═════</b>\n\n<b>• <a href='{download.message.link}'>{download.status()}</a>: </b>"
             msg += f"<code>{escape(str(download.name()))}</code>"
             if download.status() not in [MirrorStatus.STATUS_SEEDING, MirrorStatus.STATUS_SPLITTING]:
                 if EMOJI_THEME is True:
@@ -281,35 +281,36 @@ def get_readable_message():
                 elif 'M' in spd:
                     up_speed += float(spd.split('M')[0]) * 1048576
         if EMOJI_THEME is True:
-            bmsg = f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
-            bmsg += f"\n𝗕𝗢𝗧 𝗨𝗣𝗧𝗜𝗠𝗘⏰: <code>{currentTime}</code>"
-            bmsg += f"\n𝗗𝗹: {get_readable_file_size(dl_speed)}/s🔻 | 𝗨𝗹: {get_readable_file_size(up_speed)}/s🔺"
+            bmsg = f"<b>🖥 CPU:</b> {cpu_percent()}% | <b>💿 FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
+            bmsg += f"\n<b>🎮 RAM:</b> {virtual_memory().percent}% | <b>🟢 UPTIME:</b> {get_readable_time(time() - botStartTime)}"
+            bmsg += f"\n<b>🔻 DL:</b> {get_readable_file_size(dl_speed)}/s | <b>🔺 UL:</b> {get_readable_file_size(up_speed)}/s"
         else:
-            bmsg = f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
-            bmsg += f"\n𝗕𝗢𝗧 𝗨𝗣𝗧𝗜𝗠𝗘⏰: <code>{currentTime}</code>"
-            bmsg += f"\n𝗗𝗹: {get_readable_file_size(dl_speed)}/s🔻 | 𝗨𝗹: {get_readable_file_size(up_speed)}/s🔺"
+            bmsg = f"<b>CPU:</b> {cpu_percent()}% | <b>FREE:</b> {get_readable_file_size(disk_usage(DOWNLOAD_DIR).free)}"
+            bmsg += f"\n<b>RAM:</b> {virtual_memory().percent}% | <b>UPTM:</b> {get_readable_time(time() - botStartTime)}"
+            bmsg += f"\n<b>DL:</b> {get_readable_file_size(dl_speed)}/s | <b>UL:</b> {get_readable_file_size(up_speed)}/s"
         
         buttons = ButtonMaker()
         buttons.sbutton("🔄", "status refresh")
         buttons.sbutton("📈", str(THREE))
         buttons.sbutton("❌", "status close")
-        sbutton = buttons.build_menu(3)
+        sbutton = InlineKeyboardMarkup(buttons.build_menu(3))
         
         if STATUS_LIMIT is not None and tasks > STATUS_LIMIT:
+            msg += f"<b>Tasks:</b> {tasks}\n"
             buttons = ButtonMaker()
             if EMOJI_THEME is True:
-                buttons.sbutton("⏪", "status pre")
-                buttons.sbutton("❌", "status close")
-                buttons.sbutton("⏩", "status nex")
-                buttons.sbutton("🔄", "status refresh")
-                buttons.sbutton("📈", str(THREE))
+                buttons.sbutton("⏪Previous", "status pre")
+                buttons.sbutton(f"{PAGE_NO}/{pages}", str(THREE))
+                buttons.sbutton("Next⏩", "status nex")
+                buttons.sbutton("Refresh", "status refresh")
+                buttons.sbutton("Close", "status close")
             else:
                 buttons.sbutton("Previous", "status pre")
-                buttons.sbutton("Cancel", "status close")
+                buttons.sbutton(f"{PAGE_NO}/{pages}", str(THREE))
                 buttons.sbutton("Next", "status nex")
                 buttons.sbutton("Refresh", "status refresh")
-                buttons.sbutton("Statics", str(THREE))
-            button = buttons.build_menu(3)
+                buttons.sbutton("Close", "status close")
+            button = InlineKeyboardMarkup(buttons.build_menu(3))
             return msg + bmsg, button
         return msg + bmsg, sbutton
 
@@ -460,14 +461,13 @@ def bot_sys_stats():
     stats = f"""
 BOT UPTIME⏰: {currentTime}
 
-CPU : {progress_bar(cpu)} {cpu}%
-RAM : {progress_bar(mem)} {mem}%
-DISK : {progress_bar(disk)} {disk}%
+CPU : {cpu}% | RAM : {mem}%
 
-TOTAL : {total}
+DL : {num_active} | UP : {num_upload} | SPLIT : {num_split}
+ZIP : {num_archi} | UNZIP : {num_extract} | TOTAL : {tasks}
 
-USED : {used} || FREE : {free}
-UL : {sent} || DL : {recv}
+Limits : T/D : {TORRENT_DIRECT_LIMIT}GB | Z/U : {ZIP_UNZIP_LIMIT}GB
+                    L : {LEECH_LIMIT}GB | M : {MEGA_LIMIT}GB
 
 Made with ❤️ by @MR_X_CLOUD
 """
