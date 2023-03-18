@@ -281,11 +281,11 @@ def get_readable_message():
                 elif 'M' in spd:
                     up_speed += float(spd.split('M')[0]) * 1048576
         if EMOJI_THEME is True:
-            bmsg += f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
+            bmsg = f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
             bmsg += f"\n𝗕𝗢𝗧 𝗨𝗣𝗧𝗜𝗠𝗘⏰: <code>{currentTime}</code>"
             bmsg += f"\n𝗗𝗹: {get_readable_file_size(dl_speed)}/s🔻 | 𝗨𝗹: {get_readable_file_size(up_speed)}/s🔺"
         else:
-            bmsg += f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
+            bmsg = f"\n📖 𝗣𝗮𝗴𝗲𝘀: {PAGE_NO}/{pages} | 📝 𝗧𝗮𝘀𝗸𝘀: {tasks}"
             bmsg += f"\n𝗕𝗢𝗧 𝗨𝗣𝗧𝗜𝗠𝗘⏰: <code>{currentTime}</code>"
             bmsg += f"\n𝗗𝗹: {get_readable_file_size(dl_speed)}/s🔻 | 𝗨𝗹: {get_readable_file_size(up_speed)}/s🔺"
         
